@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+const API_BASE = "https://securelogin-production.up.railway.app";
+
 function Register() {
   const [form, setForm] = useState({
     name: "",
@@ -14,20 +16,24 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     console.log("REGISTER CLICKED");
+
     try {
-     const res = await fetch(
-  "https://securelogin-production.up.railway.app/api/v1/auth/register",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(form)
-  }
-);
+      console.log("SENDING REQUEST...");
+
+      const res = await fetch(`${API_BASE}/api/v1/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form)
+      });
+
+      console.log("RESPONSE RECEIVED:", res.status);
 
       const data = await res.json();
+      console.log("DATA:", data);
 
       if (!res.ok) {
         throw new Error(data?.error || "Registration failed");
@@ -35,9 +41,11 @@ function Register() {
 
       localStorage.setItem("token", data.token);
 
+      console.log("SUCCESS");
       alert("Registration successful");
-      console.log("Token:", data.token);
+
     } catch (err) {
+      console.error("ERROR:", err);
       alert(err.message);
     }
   };
