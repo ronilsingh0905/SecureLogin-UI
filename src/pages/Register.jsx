@@ -49,7 +49,7 @@ function Register() {
       alert(err.message);
     }
   };
-
+  console.log("VERSION 2 - REGISTER UPDATED");
   return (
     <div style={{ padding: "20px" }}>
       <h2>Register</h2>
